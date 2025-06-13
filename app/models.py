@@ -21,12 +21,13 @@ class Post(Base):
 # create a model for usercreate
 
 class User(Base):
-    __tablename__ = "user"
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, nullable=False, index=True)
     email = Column(String, unique=True, index=True, nullable=False)  # <-- EMAIL field
+    hashed_password = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
 
     def __repr__(self):
         return f"<Post(id={self.id}, title='{self.title}')>"

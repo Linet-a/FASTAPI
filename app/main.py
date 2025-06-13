@@ -5,6 +5,7 @@ from app.routers import users, post  # import the routers
 
 
 
+
 app = FastAPI()
 
 
@@ -12,7 +13,6 @@ Base.metadata.create_all(bind=engine)
 
 
 # include the routers
-#app.include_router(users.router)
 app.include_router(post.router)
 app.include_router(users.router)
 

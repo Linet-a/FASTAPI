@@ -13,21 +13,19 @@ class PostResponse(PostBase):
     id: int
 
     class Config:
-        orm_model = True
+        orm_mode = True
 
 
-
-
-        
-
+       
+#users schemas
 
 class UserCreate(BaseModel):
-    username: str
     email: EmailStr
- 
-class UserResponse(UserCreate):
-    #should return : id, email
+    password: str
+
+class UserResponse(BaseModel):
     id: int
+    email: EmailStr
 
     class Config:
-        orm_model = True
+        orm_mode = True

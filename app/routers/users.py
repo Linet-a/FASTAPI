@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from .. import models, schemas
-from ..utils import get_db
+from ..utils import get_db, hash_password, verify_password
 
 
 
@@ -12,9 +12,10 @@ router = APIRouter(
 
 #usercreate router
 @router.post("/", response_model=schemas.UserResponse, status_code = status.HTTP_201_CREATED)
-def create_users(user:schemas.UserCreate, db:Session = Depends(get_db)):
-    user_data = user.model_dump() #because.dict() is deprecated
-    current_user = models.User(**user_data)
+def create_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
+    hashed_pwd = hash_password(user.password)
+
+    current_user = models.User(email=user.email, hashed_password=hashed_pwd)# storre the hashed password
 
     db.add(current_user)
     db.commit()
@@ -22,11 +23,18 @@ def create_users(user:schemas.UserCreate, db:Session = Depends(get_db)):
 
     return current_user
 
+#user login route
+@router.post("/login")
+def log_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
+    """
+        check if user is in the database
+        very if their apsswords match: 
+        return sucess message
+    """
+    db_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if not db_user or  not verify_password(user.password, db_user.hashed_password):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong credentials")
+    return {"message":"user successfullly logged in"}
 
-@router.get("/{user_id}", response_model=schemas.UserResponse)
-def get_user(user_id:int, db:Session = Depends(get_db)):
 
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with the {user_id} not found")
-    return user
+

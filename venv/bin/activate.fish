@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/linet/Desktop/FASTAPI_PROJECT/venv
+set -gx VIRTUAL_ENV /home/linet/Desktop/FASTAPI/venv
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH
