@@ -33,4 +33,3 @@ class User(Base):
         return f"<Post(id={self.id}, title='{self.title}')>"
 
 
-    

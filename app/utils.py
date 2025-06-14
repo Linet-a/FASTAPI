@@ -21,6 +21,6 @@ def hash_password(user_pswd:str) -> str:
 
 #define a function that verifies user pasword aginst the hashed password
 
-def verify_password(plain_password:str, hashed_password):
+def verify_password(plain_password:str, hashed_password:str)-> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
