@@ -1,6 +1,7 @@
-from sqlalchemy import Column, String, Integer, Text, DateTime, Boolean
+from sqlalchemy import Column, String, Integer, Text, DateTime, Boolean,ForeignKey
 from .database import Base
 from sqlalchemy import func
+from sqlalchemy.orm import relationship
 
 
 
@@ -13,6 +14,9 @@ class Post(Base):
     content = Column(Text, nullable=False)
     published = Column(Boolean, nullable=False, server_default="1") 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+
+    owner = relationship("User")
 
     def __repr__(self):
         return f"<Post(id={self.id}, title='{self.title}')>"

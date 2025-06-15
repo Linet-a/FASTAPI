@@ -24,4 +24,7 @@ def create_user(user:schemas.UserCreate, db:Session = Depends(get_db)):
     return current_user
 
 
+#delete user
+
+
 

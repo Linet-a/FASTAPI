@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 #user login route
-@router.post("/login")
+@router.post("/login", response_model=schemas.Token)
 def log_user(user_credentials:OAuth2PasswordRequestForm = Depends(), db:Session = Depends(get_db)):
     """
         check if user is in the database
